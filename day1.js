@@ -1002,27 +1002,29 @@ twotwo4seven1fqklblqbdxcmtch`;
 
 let result = input.split(/\n/).map(line => line.split('').filter(d => !isNaN(d))).map(arr => parseInt(arr[0] + arr[arr.length - 1])).reduce((acc, curr) => acc + curr, 0);
 
-console.log(result);
+// console.log(result);
 
 // part 2
-
 let input2 = `two1nine
 eightwothree
 abcone2threexyz
 xtwone3four
 4nineeightseven2
 zoneight234
-7pqrstsixteen`;
+7pqrstsixteen`.split(/\n/);
 
-let letters = ['one','two','three','four','five','six','seven','eight','nine'];
+let wordToNum = {'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9};
 
-/*
-  cannot simply replaceAll because of overlap letters e.g. eighttwo
-  since "eight" comes first it should come out as "8wo"
-  replaceAll in array order would yield "eigh2" which is wrong
-*/ 
-letters.forEach((letter, idx) => {
-  input2 = input2.replaceAll(letter, idx + 1);
-});
+const toNum = inp => isNaN(parseInt(inp)) ? wordToNum[inp] : parseInt(inp);
 
-console.log(input2);
+const res = input.split(/\n/).reduce((a,s) => {
+  
+  let d = [...s.matchAll(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/g)].map(a => a[1]);
+  let first = toNum(d[0]);
+  let last = toNum(d.at(-1));
+
+
+  return a + parseInt(`${first}${last}`);
+}, 0);
+
+console.log(res);
